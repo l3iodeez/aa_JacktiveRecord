@@ -1,6 +1,4 @@
-
-
-class Reply
+class Reply < ModelBase
 
   def self.all
     results = QuestionsDatabase.instance.execute('SELECT * FROM replies')
@@ -91,7 +89,7 @@ class Reply
       WHERE
         replies.parent_id = ?
     SQL
-    
+
     results.map { |result| Reply.new(result) }
   end
 

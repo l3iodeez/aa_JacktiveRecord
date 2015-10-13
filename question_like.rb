@@ -1,5 +1,4 @@
-
-class QuestionLike
+class QuestionLike < ModelBase
   def self.all
     results = QuestionsDatabase.instance.execute('SELECT * FROM question_likes')
     results.map { |result| QuestionLike.new(result) }

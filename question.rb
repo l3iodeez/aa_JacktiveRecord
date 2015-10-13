@@ -1,5 +1,4 @@
-
-class Question
+class Question < ModelBase
   def self.all
     results = QuestionsDatabase.instance.execute('SELECT * FROM questions')
     results.map { |result| Question.new(result) }

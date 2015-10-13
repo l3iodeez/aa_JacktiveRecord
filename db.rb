@@ -1,5 +1,6 @@
 require 'singleton'
 require 'sqlite3'
+require_relative 'model_base.rb'
 require_relative 'user.rb'
 require_relative 'question.rb'
 require_relative 'question_follow.rb'

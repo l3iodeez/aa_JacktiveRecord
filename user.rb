@@ -1,6 +1,4 @@
-
-
-class User
+class User < ModelBase
   def self.all
     results = QuestionsDatabase.instance.execute('SELECT * FROM users')
     results.map { |result| User.new(result) }
@@ -35,25 +33,11 @@ class User
 
   attr_accessor :id, :fname, :lname
   # attr_reader :id
-
+  TABLE = 'users'
   def initialize(options = {})
     @fname = options['fname']
     @lname = options['lname']
     @id = options['id']
-  end
-
-  def create
-    raise 'already saved!' unless self.id.nil?
-
-    params = [self.fname, self.lname]
-    QuestionsDatabase.instance.execute(<<-SQL, *params)
-      INSERT INTO
-        users (fname, lname)
-      VALUES
-        (?, ?)
-    SQL
-
-    @id = QuestionsDatabase.instance.last_insert_row_id
   end
 
   def authored_questions
