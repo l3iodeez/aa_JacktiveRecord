@@ -1,17 +1,4 @@
-require 'singleton'
-require 'sqlite3'
 
-class QuestionsDatabase < SQLite3::Database
-
-  include Singleton
-
-  def initialize
-
-    super('questions.db')
-    self.results_as_hash = true
-    self.type_translation = true
-  end
-end
 
 class User
   def self.all
@@ -28,7 +15,8 @@ class User
       WHERE
         users.id = ?
     SQL
-    User.new(options_hash)
+
+    User.new(options_hash.first)
   end
 
   def self.find_by_name(fname, lname)
@@ -40,8 +28,8 @@ class User
       WHERE
         users.fname = :fname AND
         users.lname = :lname
-
     SQL
+
     User.new(options_hash)
   end
 
@@ -64,20 +52,24 @@ class User
       VALUES
         (?, ?)
     SQL
-    
-  @id = QuestionsDatabase.instance.last_insert_row_id
+
+    @id = QuestionsDatabase.instance.last_insert_row_id
   end
 
-end
+  def authored_questions
+    Question.find_by_author_id(self.id)
+  end
 
-class Question
-end
+  def authored_replies
+    Reply.find_by_user_id(self.id)
+  end
 
-class Question_follow
-end
+  def followed_questions
+    QuestionFollow.followed_questions_for_user_id(self.id)
+  end
 
-class Reply
-end
+  def liked_questions
+    QuestionLike.liked_questions_for_user_id(self.id)
+  end
 
-class Question_like
 end
